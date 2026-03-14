@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Invitación a tomar café</title>
+
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f7d9e3, #fff6d1);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    section {
+        background: white;
+        padding: 30px;
+        width: 320px;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        animation: fadeIn 0.6s ease;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: #ff7aa2;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background: #ff5c8a;
+        transform: scale(1.03);
+    }
+
+    input {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla 1 -->
+    <section id="pantalla1">
+        <h2>¿Quieres ir a tomar un café conmigo?</h2>
+        <button onclick="irASi()">Sí</button>
+        <button onclick="irANo()">No</button>
+    </section>
+
+    <!-- Pantalla 2 -->
+    <section id="pantalla2" style="display:none;">
+        <h2>Elige un lugar</h2>
+        <button onclick="seleccionarLugar('QuadradoCafe')">QuadradoCafe</button>
+        <button onclick="seleccionarLugar('Millenium')">Millenium</button>
+        <button onclick="seleccionarLugar('Panadería Cualquiera')">Panadería Cualquiera</button>
+    </section>
+
+    <!-- Pantalla 3 -->
+    <section id="pantalla3" style="display:none;">
+        <h2>Selecciona fecha y hora</h2>
+        <input type="date" id="fecha">
+        <input type="time" id="hora">
+        <button onclick="confirmarCita()">Confirmar</button>
+    </section>
+
+    <!-- Pantalla 4 -->
+    <section id="pantalla4" style="display:none;">
+        <h2 id="mensajeFinal"></h2>
+    </section>
+
+    <!-- Pantalla No -->
+    <section id="pantallaNo" style="display:none;">
+        <h2>Este botón está fuera de servicio por ahora.</h2>
+        <p>Solo puedes elegir “Sí”. Disculpa las molestias ocasionadas… guiño guiño 😉</p>
+    </section>
+
+    <script>
+        let lugarSeleccionado = "";
+
+        function irASi() {
+            mostrar('pantalla2');
+        }
+
+        function irANo() {
+            mostrar('pantallaNo');
+        }
+
+        function seleccionarLugar(lugar) {
+            lugarSeleccionado = lugar;
+            mostrar('pantalla3');
+        }
+
+        function confirmarCita() {
+            const fecha = document.getElementById('fecha').value;
+            const hora = document.getElementById('hora').value;
+
+            const mensaje = `Perfecto, nos vemos en ${lugarSeleccionado} el ${fecha} a las ${hora}. ¡Nos vemos!`;
+            document.getElementById('mensajeFinal').textContent = mensaje;
+
+            mostrar('pantalla4');
+        }
+
+        function mostrar(id) {
+            document.querySelectorAll('section').forEach(sec => sec.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
