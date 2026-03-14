@@ -1,136 +1,192 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Invitación a tomar café</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación a un Café</title>
 
-    <style>
-        body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #f7d9e3, #fff6d1);
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    section {
-        background: white;
-        padding: 30px;
-        width: 320px;
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        background-color: #F5EFE7;
+        color: #2F4F3E;
         text-align: center;
+        padding: 20px;
+    }
+
+    .card {
+        background: #ffffff;
+        padding: 25px;
         border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        max-width: 420px;
+        margin: auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         animation: fadeIn 0.6s ease;
-    }
-
-    h2 {
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-    button {
-        display: block;
-        width: 100%;
-        margin: 10px 0;
-        padding: 12px;
-        border: none;
-        border-radius: 10px;
-        background: #ff7aa2;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    button:hover {
-        background: #ff5c8a;
-        transform: scale(1.03);
-    }
-
-    input {
-        width: 90%;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 8px;
-        border: 1px solid #ccc;
     }
 
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
-    </style>
+
+    /* ANIMACIÓN DE REBOTE SUAVE */
+    .emoji-rebote {
+        font-size: 40px;
+        animation: rebote 1.8s infinite ease-in-out;
+    }
+
+    @keyframes rebote {
+        0% { transform: translateY(0); }
+        30% { transform: translateY(-10px); }
+        60% { transform: translateY(0); }
+        100% { transform: translateY(0); }
+    }
+
+    h1 {
+        color: #5A3E36;
+        font-size: 26px;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 10px;
+        transition: 0.3s;
+    }
+
+    .yes {
+        background-color: #4F6F52;
+        color: white;
+    }
+
+    .yes:hover {
+        background-color: #2F4F3E;
+    }
+
+    .no {
+        background-color: #A97458;
+        color: white;
+    }
+
+    .no:hover {
+        background-color: #5A3E36;
+    }
+
+    img {
+        width: 150px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+
+    input {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #A97458;
+        margin: 8px;
+        width: 80%;
+    }
+</style>
 </head>
+
 <body>
 
-    <!-- Pantalla 1 -->
-    <section id="pantalla1">
-        <h2>¿Quieres ir a tomar un café conmigo?</h2>
-        <button onclick="irASi()">Sí</button>
-        <button onclick="irANo()">No</button>
-    </section>
+<!-- PANTALLA 1 -->
+<div class="card" id="pantalla1">
+    <div class="emoji-rebote">☕</div>
+    <h1>¿Te gustaría tomar un café conmigo?</h1>
+    <button class="yes" onclick="mostrarPantalla2()">Sí, claro ☕💚</button>
+    <button class="no" onclick="mostrarPantallaNo()">No 😢</button>
+</div>
 
-    <!-- Pantalla 2 -->
-    <section id="pantalla2" style="display:none;">
-        <h2>Elige un lugar</h2>
-        <button onclick="seleccionarLugar('QuadradoCafe')">QuadradoCafe</button>
-        <button onclick="seleccionarLugar('Millenium')">Millenium</button>
-        <button onclick="seleccionarLugar('Panadería Cualquiera')">Panadería Cualquiera</button>
-    </section>
+<!-- PANTALLA 2 -->
+<div class="card" id="pantalla2" style="display:none;">
+    <div class="emoji-rebote">📅</div>
+    <h1>Elige la fecha</h1>
+    <input type="date" id="fecha">
+    <button class="yes" onclick="mostrarPantalla3()">Continuar</button>
+</div>
 
-    <!-- Pantalla 3 -->
-    <section id="pantalla3" style="display:none;">
-        <h2>Selecciona fecha y hora</h2>
-        <input type="date" id="fecha">
-        <input type="time" id="hora">
-        <button onclick="confirmarCita()">Confirmar</button>
-    </section>
+<!-- PANTALLA 3 -->
+<div class="card" id="pantalla3" style="display:none;">
+    <div class="emoji-rebote">⏰</div>
+    <h1>¿A qué hora te gustaría?</h1>
+    <input type="time" id="hora">
+    <button class="yes" onclick="mostrarFinal()">Confirmar</button>
+</div>
 
-    <!-- Pantalla 4 -->
-    <section id="pantalla4" style="display:none;">
-        <h2 id="mensajeFinal"></h2>
-    </section>
+<!-- PANTALLA NO -->
+<div class="card" id="pantallaNo" style="display:none;">
+    <div class="emoji-rebote">😏</div>
+    <img src="img.samondaque.png">
+    <h1>Ups… 😏</h1>
+    <p>
+        Jajaja… te jo… 😏<br>
+        El botón <b>NO</b> es solo de relleno.<br>
+        Por ahora y para siempre solo funciona el <b>SÍ</b> 😈
+    </p>
+</div>
 
-    <!-- Pantalla No -->
-    <section id="pantallaNo" style="display:none;">
-        <h2>Este botón está fuera de servicio por ahora.</h2>
-        <p>Solo puedes elegir “Sí”. Disculpa las molestias ocasionadas… guiño guiño 😉</p>
-    </section>
+<!-- PANTALLA FINAL -->
+<div class="card" id="pantallaFinal" style="display:none;">
+    <div class="emoji-rebote">✨</div>
+    <h1>¡Listo! ☕✨</h1>
+    <p id="mensajeFinal"></p>
+</div>
 
-    <script>
-        let lugarSeleccionado = "";
+<script>
 
-        function irASi() {
-            mostrar('pantalla2');
-        }
+/* BLOQUEAR BOTÓN ATRÁS */
+history.pushState(null, "", location.href);
+window.onpopstate = function () {
+    history.go(1);
+};
 
-        function irANo() {
-            mostrar('pantallaNo');
-        }
+function mostrarPantalla2() {
+    document.getElementById("pantalla1").style.display = "none";
+    document.getElementById("pantalla2").style.display = "block";
+    history.pushState(null, "", location.href);
+}
 
-        function seleccionarLugar(lugar) {
-            lugarSeleccionado = lugar;
-            mostrar('pantalla3');
-        }
+function mostrarPantalla3() {
+    document.getElementById("pantalla2").style.display = "none";
+    document.getElementById("pantalla3").style.display = "block";
+    history.pushState(null, "", location.href);
+}
 
-        function confirmarCita() {
-            const fecha = document.getElementById('fecha').value;
-            const hora = document.getElementById('hora').value;
+function mostrarPantallaNo() {
+    document.getElementById("pantalla1").style.display = "none";
+    document.getElementById("pantallaNo").style.display = "block";
+    history.pushState(null, "", location.href);
+}
 
-            const mensaje = `Perfecto, nos vemos en ${lugarSeleccionado} el ${fecha} a las ${hora}. ¡Nos vemos!`;
-            document.getElementById('mensajeFinal').textContent = mensaje;
+function mostrarFinal() {
+    let fecha = document.getElementById("fecha").value;
+    let hora = document.getElementById("hora").value;
 
-            mostrar('pantalla4');
-        }
+    let f = new Date(fecha);
+    let dia = String(f.getDate()).padStart(2, '0');
+    let mes = String(f.getMonth()+1).padStart(2, '0');
+    let año = String(f.getFullYear()).slice(2);
 
-        function mostrar(id) {
-            document.querySelectorAll('section').forEach(sec => sec.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-        }
-    </script>
+    let fechaFormateada = `${dia}/${mes}/${año}`;
+
+    document.getElementById("mensajeFinal").innerHTML = `
+        ¡Perfecto! Ya tengo todo listo para nuestro café ☕✨<br><br>
+        Te espero el <b>${fechaFormateada}</b> a las <b>${hora}</b>.<br><br>
+        Será un momento bonito, prometido 💚
+    `;
+
+    document.getElementById("pantalla3").style.display = "none";
+    document.getElementById("pantallaFinal").style.display = "block";
+    history.pushState(null, "", location.href);
+}
+
+</script>
 
 </body>
 </html>
+
