@@ -3,190 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Invitación a un Café</title>
+<title>Reflexión</title>
 
 <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
         font-family: "Poppins", sans-serif;
-        background-color: #F5EFE7;
-        color: #2F4F3E;
-        text-align: center;
+        overflow: hidden;
+    }
+
+    /* PANTALLAS */
+    .pantalla {
+        display: none;
+        height: 100vh;
+        width: 100vw;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         padding: 20px;
+        position: relative;
+        justify-content: center;
+        align-items: center;
     }
 
-    .card {
-        background: #ffffff;
+    .visible { display: flex; }
+
+    /* NUBE FLOTANTE */
+    .nube {
+        background: rgba(255, 255, 255, 0.82);
         padding: 25px;
-        border-radius: 15px;
-        max-width: 420px;
-        margin: auto;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        animation: fadeIn 0.6s ease;
+        border-radius: 35px;
+        max-width: 90%;
+        width: 600px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        animation: flotar 4s ease-in-out infinite;
+        backdrop-filter: blur(4px);
+        text-align: center;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ANIMACIÓN DE REBOTE SUAVE */
-    .emoji-rebote {
-        font-size: 40px;
-        animation: rebote 1.8s infinite ease-in-out;
-    }
-
-    @keyframes rebote {
+    @keyframes flotar {
         0% { transform: translateY(0); }
-        30% { transform: translateY(-10px); }
-        60% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
         100% { transform: translateY(0); }
     }
 
-    h1 {
-        color: #5A3E36;
-        font-size: 26px;
-        margin-bottom: 10px;
-    }
+    /* TEXTO */
+    h1 { font-size: 26px; margin-bottom: 15px; color: #333; }
+    p { font-size: 17px; color: #444; line-height: 1.5; margin-bottom: 10px; }
 
-    button {
+    /* BOTONES */
+    .opciones button {
         padding: 12px 20px;
         border: none;
-        border-radius: 10px;
+        border-radius: 12px;
         font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
-        margin: 10px;
+        margin: 8px;
+        width: 100%;
+        max-width: 250px;
         transition: 0.3s;
     }
 
-    .yes {
-        background-color: #4F6F52;
-        color: white;
+    .btn-bien { background: #FFB86C; color: #fff; }
+    .btn-regular { background: #6CC4A1; color: #fff; }
+    .btn-mal { background: #A06CD5; color: #fff; }
+
+    .opciones button:hover {
+        transform: translateY(-3px);
+        opacity: 0.9;
     }
 
-    .yes:hover {
-        background-color: #2F4F3E;
-    }
-
-    .no {
-        background-color: #A97458;
-        color: white;
-    }
-
-    .no:hover {
-        background-color: #5A3E36;
-    }
-
-    img {
-        width: 150px;
-        margin-bottom: 15px;
-        border-radius: 10px;
-    }
-
-    input {
+    /* FLECHAS */
+    .flecha {
+        position: absolute;
+        top: 15px;
+        font-size: 30px;
+        cursor: pointer;
         padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #A97458;
-        margin: 8px;
-        width: 80%;
+        background: rgba(255,255,255,0.6);
+        border-radius: 50%;
+        user-select: none;
+    }
+
+    .atras { left: 15px; }
+    .adelante { right: 15px; }
+
+    .flecha:hover { background: rgba(255,255,255,0.85); }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+        h1 { font-size: 22px; }
+        p { font-size: 15px; }
+        .nube { padding: 18px; }
     }
 </style>
 </head>
 
 <body>
 
-<!-- PANTALLA 1 -->
-<div class="card" id="pantalla1">
-    <div class="emoji-rebote">☕</div>
-    <h1>¿Te gustaría tomar un café conmigo?</h1>
-    <button class="yes" onclick="mostrarPantalla2()">Sí, claro ☕💚</button>
-    <button class="no" onclick="mostrarPantallaNo()">No 😢</button>
+<!-- AUDIO -->
+<audio id="musicaFondo" src="audio/audio.piano.mp3" autoplay loop></audio>
+
+<script>
+document.addEventListener("click", () => {
+    const audio = document.getElementById("musicaFondo");
+    if (audio.paused) audio.play();
+}, { once: true });
+</script>
+
+<!-- PANTALLA INICIO -->
+<div class="pantalla visible" id="inicio" style="background-image: url('fondos/img.inicio (2).jpg');">
+    <div class="nube">
+        <h1>¿Cómo te encuentras hoy?</h1>
+        <div class="opciones">
+            <button class="btn-bien" onclick="mostrar('bien')">Bien 😊</button>
+            <button class="btn-regular" onclick="mostrar('regular')">Regular 😐</button>
+            <button class="btn-mal" onclick="mostrar('mal')">Mal 😔</button>
+        </div>
+    </div>
 </div>
 
-<!-- PANTALLA 2 -->
-<div class="card" id="pantalla2" style="display:none;">
-    <div class="emoji-rebote">📅</div>
-    <h1>Elige la fecha</h1>
-    <input type="date" id="fecha">
-    <button class="yes" onclick="mostrarPantalla3()">Continuar</button>
+<!-- PANTALLA BIEN -->
+<div class="pantalla" id="bien" style="background-image: url('fondos/img.bien.jpg');">
+    <div class="flecha atras" onclick="mostrar('inicio')">⬅</div>
+    <div class="flecha adelante" onclick="mostrar('final')">➡</div>
+
+    <div class="nube">
+        <p>
+A veces, cuando nos sentimos bien, la vida se vuelve ligera y dejamos que los días pasen sin darnos cuenta de lo valioso que nos rodea.
+</p>
+
+<p>
+Entre risas, rutinas y momentos bonitos, solemos olvidar pequeños tesoros: una llamada a mamá, un mensaje a ese amigo sincero, un abrazo a quien siempre está, una palabra dulce para quienes nos aman.
+</p>
+
+<p>
+Y en medio de esa comodidad, también es fácil distraerse con lo pasajero: encuentros casuales, deseos impulsivos o esa búsqueda rápida de placer que a veces nos aleja de lo que realmente importa. No es un juicio, es un recordatorio suave de que lo inmediato no siempre llena, y que lo profundo suele necesitar un poco más de atención.
+</p>
+
+<p>
+Hoy estás bien, y eso es hermoso. Ojalá este bienestar también toque a quienes te quieren, y que puedas disfrutarlo sin perder de vista lo que sostiene tu mundo.
+</p>
+
+    </div>
 </div>
 
-<!-- PANTALLA 3 -->
-<div class="card" id="pantalla3" style="display:none;">
-    <div class="emoji-rebote">⏰</div>
-    <h1>¿A qué hora te gustaría?</h1>
-    <input type="time" id="hora">
-    <button class="yes" onclick="mostrarFinal()">Confirmar</button>
+<!-- PANTALLA REGULAR -->
+<div class="pantalla" id="regular" style="background-image: url('fondos/img.regular.jpg');">
+    <div class="flecha atras" onclick="mostrar('inicio')">⬅</div>
+    <div class="flecha adelante" onclick="mostrar('final')">➡</div>
+
+    <div class="nube">
+        <p>Estar “regular” es ese punto medio donde nada está mal, pero tampoco está del todo bien...</p>
+        <p>A veces, sentirse así significa que llevas mucho tiempo siendo fuerte sin darte crédito...</p>
+        <p>Lo importante es recordar que incluso en estos días tibios, sigues avanzando...</p>
+        <p>Y si hoy estás aquí, es porque sigues buscando tu equilibrio...</p>
+    </div>
 </div>
 
-<!-- PANTALLA NO -->
-<div class="card" id="pantallaNo" style="display:none;">
-    <div class="emoji-rebote">😏</div>
-    <img src="img.samondaque.png">
-    <h1>Ups… 😏</h1>
-    <p>
-        Jajaja… te jo… 😏<br>
-        El botón <b>NO</b> es solo de relleno.<br>
-        Por ahora y para siempre solo funciona el <b>SÍ</b> 😈
-    </p>
+<!-- PANTALLA MAL -->
+<div class="pantalla" id="mal" style="background-image: url('fondos/img.mal.jpg');">
+    <div class="flecha atras" onclick="mostrar('inicio')">⬅</div>
+    <div class="flecha adelante" onclick="mostrar('final')">➡</div>
+
+    <div class="nube">
+        <p>Hay días en los que el mundo pesa más de lo normal...</p>
+        <p>A veces el dolor no viene de un solo lugar...</p>
+        <p>Está bien detenerte. Está bien llorar...</p>
+        <p>Lo que importa es que sigas aquí...</p>
+        <p>No estás fallando: estás atravesando...</p>
+    </div>
 </div>
 
 <!-- PANTALLA FINAL -->
-<div class="card" id="pantallaFinal" style="display:none;">
-    <div class="emoji-rebote">✨</div>
-    <h1>¡Listo! ☕✨</h1>
-    <p id="mensajeFinal"></p>
+<div class="pantalla" id="final" style="background-image: url('fondos/img.Posdat.jpg');">
+    <div class="flecha atras" onclick="mostrar('inicio')">⬅</div>
+
+    <div class="nube">
+        <p>Puedes venir siempre, si tu mundo está completo, revuelto o quebrado...</p>
+        <p>No importa cómo llegues, lo importante es que sigas llegando.</p>
+        <br>
+        <p>Recuerda que el tiempo no vuelve y la vida no repite...</p>
+        <p>Lo que siembras hoy, en calma o en caos, será lo que florezca mañana.</p>
+    </div>
 </div>
 
 <script>
-
-/* BLOQUEAR BOTÓN ATRÁS */
-history.pushState(null, "", location.href);
-window.onpopstate = function () {
-    history.go(1);
-};
-
-function mostrarPantalla2() {
-    document.getElementById("pantalla1").style.display = "none";
-    document.getElementById("pantalla2").style.display = "block";
-    history.pushState(null, "", location.href);
+function mostrar(id) {
+    document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('visible'));
+    document.getElementById(id).classList.add('visible');
 }
-
-function mostrarPantalla3() {
-    document.getElementById("pantalla2").style.display = "none";
-    document.getElementById("pantalla3").style.display = "block";
-    history.pushState(null, "", location.href);
-}
-
-function mostrarPantallaNo() {
-    document.getElementById("pantalla1").style.display = "none";
-    document.getElementById("pantallaNo").style.display = "block";
-    history.pushState(null, "", location.href);
-}
-
-function mostrarFinal() {
-    let fecha = document.getElementById("fecha").value;
-    let hora = document.getElementById("hora").value;
-
-    let f = new Date(fecha);
-    let dia = String(f.getDate()).padStart(2, '0');
-    let mes = String(f.getMonth()+1).padStart(2, '0');
-    let año = String(f.getFullYear()).slice(2);
-
-    let fechaFormateada = `${dia}/${mes}/${año}`;
-
-    document.getElementById("mensajeFinal").innerHTML = `
-        ¡Perfecto! Ya tengo todo listo para nuestro café ☕✨<br><br>
-        Te espero el <b>${fechaFormateada}</b> a las <b>${hora}</b>.<br><br>
-        Será un momento bonito, prometido 💚
-    `;
-
-    document.getElementById("pantalla3").style.display = "none";
-    document.getElementById("pantallaFinal").style.display = "block";
-    history.pushState(null, "", location.href);
-}
-
 </script>
 
 </body>
 </html>
-
